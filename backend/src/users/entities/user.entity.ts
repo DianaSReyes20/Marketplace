@@ -13,7 +13,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'buyer' })
+  @Column({ default: 'seller' })
   role: string; // 'admin' | 'buyer' | 'seller'
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })

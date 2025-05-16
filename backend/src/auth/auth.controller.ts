@@ -54,7 +54,7 @@ export class AuthController {
     const newUser = await this.usersService.create({
       email: registerDto.email,
       password: hashedPassword,
-      role: 'user',
+      role: 'seller',
     });
 
     return {
