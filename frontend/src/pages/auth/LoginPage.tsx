@@ -8,13 +8,17 @@ import { useLoginMutation } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object({
-  email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().min(6, 'Too short').required('Required'),
+  email: Yup.string().email('Correo inválido').required('Campo obligatorio'),
+  password: Yup.string().min(6, 'Debe tener más de 6 caractéres').required('Campo obligatorio'),
 });
 
 const LoginPage = () => {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+
+  const gotoRegister = () => {
+    navigate('/register');
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -31,7 +35,7 @@ const LoginPage = () => {
           <LockOutlined />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Iniciar sesión
         </Typography>
         
         <Formik
@@ -43,8 +47,8 @@ const LoginPage = () => {
               navigate('/dashboard');
             } catch (error) {
               console.error('Error login:', error);
-              setFieldError('email', 'Invalid credentials');
-              setFieldError('password', 'Invalid credentials');
+              setFieldError('email', 'Credenciales inválidas');
+              setFieldError('password', 'Credenciales inválidas');
             }
             setSubmitting(false);
           }}
@@ -56,7 +60,7 @@ const LoginPage = () => {
                   component={TextField}
                   margin="normal"
                   fullWidth
-                  label="Email Address"
+                  label="Correo electrónico"
                   name="email"
                   autoComplete="email"
                   autoFocus
@@ -66,7 +70,7 @@ const LoginPage = () => {
                   margin="normal"
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Contraseña"
                   type="password"
                   autoComplete="current-password"
                 />
@@ -78,7 +82,18 @@ const LoginPage = () => {
                   loading={isLoading}
                   onClick={submitForm}
                 >
-                  Sign In
+                  Iniciar sesión
+                </LoadingButton>
+                <LoadingButton
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="secondary"
+                  sx={{ mt: 2, mb: 2 }}
+                  loading={isLoading}
+                  onClick={gotoRegister}
+                >
+                  Crear cuenta
                 </LoadingButton>
               </Box>
             </Form>

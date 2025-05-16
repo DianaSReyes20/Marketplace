@@ -1,17 +1,32 @@
 // src/App.tsx o src/Routes.tsx
 import PrivateRoute from './components/auth/PrivateRoute';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import LoginPage from './pages/auth/LoginPage';
+import RegisterModal from './pages/auth/RegisterModal';
 import SellerDashboard from './pages/seller/SellerDashboard';
 // import AdminPanel from './pages/admin/AdminPanel';
 
 function App() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Verificar si el usuario está en /register
+  const isRegisterRoute = location.pathname === '/register';
+
+  const handleCloseRegister = () => {
+    navigate(-1); // o navigate('/') para volver al home
+  };
+
   return (
-    <Routes>
+    <>
+      {isRegisterRoute && (
+        <RegisterModal open={true} onClose={handleCloseRegister} />
+      )}
+      
+      <Routes>
       {/* Rutas públicas */}
       <Route path="/login" element={<LoginPage />} />
-      {/* <Route path="/register" element={<RegisterPage />} /> */}
-      
+
       {/* Rutas protegidas para vendedores */}
       <Route element={<PrivateRoute allowedRoles={['seller']} />}>
         <Route path="/seller/dashboard" element={<SellerDashboard />} />
@@ -28,6 +43,7 @@ function App() {
         {/* <Route path="/profile" element={<ProfilePage />} /> */}
       </Route>
     </Routes>
+    </>
   );
 }
 

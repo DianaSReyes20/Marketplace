@@ -9,7 +9,7 @@ interface LoginRequest {
 interface RegisterRequest {
   email: string;
   password: string;
-  role?: string; // Opcional, puede ser 'seller' o 'buyer'
+  role?: string;
 }
 
 interface AuthResponse {
@@ -25,13 +25,13 @@ interface AuthResponse {
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: `${import.meta.env.VITE_API_URL}/auth`, // Asegúrate de configurar esta variable en .env como VITE_API_URL
+    baseUrl: import.meta.env.REACT_APP_API_URL || 'http://localhost:3000/',
   }),
   endpoints: (builder) => ({
     // Endpoint para login
     login: builder.mutation<AuthResponse, LoginRequest>({
       query: (credentials) => ({
-        url: '/login',
+        url: 'auth/login',
         method: 'POST',
         body: credentials,
       }),
@@ -40,9 +40,9 @@ export const authApi = createApi({
     // Endpoint para registro
     register: builder.mutation<AuthResponse, RegisterRequest>({
       query: (userData) => ({
-        url: '/register',
+        url: 'auth/register',
         method: 'POST',
-        body: { ...userData, role: userData.role || 'seller' }, // Default a 'seller'
+        body: { ...userData, role: userData.role || 'seller' },
       }),
     }),
     
