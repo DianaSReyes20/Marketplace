@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UsersModule } from '../users/users.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { ConfigModule, ConfigModuleOptions } from '@nestjs/config';
       secret: process.env.JWT_SECRET || 'devSecretKey',
       signOptions: { expiresIn: '1h' },
     }),
-    ConfigModule.forRoot({ isGlobal: true } as ConfigModuleOptions),
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],

@@ -1,6 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Product } from '../../products/entities/product.entity';
+import { Order } from '../../orders/entities/order.entity';
 
-@Entity()
+@Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,4 +18,10 @@ export class User {
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
+
+  @OneToMany(() => Product, (product) => product.userId)
+  products: Product[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 }
