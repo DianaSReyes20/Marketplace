@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx o src/Routes.tsx
+import PrivateRoute from './components/auth/PrivateRoute';
+import { Routes, Route } from 'react-router-dom';
+import LoginPage from './pages/auth/LoginPage';
+import SellerDashboard from './pages/seller/SellerDashboard';
+// import AdminPanel from './pages/admin/AdminPanel';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Routes>
+      {/* Rutas públicas */}
+      <Route path="/login" element={<LoginPage />} />
+      {/* <Route path="/register" element={<RegisterPage />} /> */}
+      
+      {/* Rutas protegidas para vendedores */}
+      <Route element={<PrivateRoute allowedRoles={['seller']} />}>
+        <Route path="/seller/dashboard" element={<SellerDashboard />} />
+        {/* <Route path="/seller/products" element={<SellerProductsPage />} /> */}
+      </Route>
+      
+      {/* Rutas protegidas para administradores */}
+      <Route element={<PrivateRoute allowedRoles={['admin']} />}>
+        {/* <Route path="/admin" element={<AdminPanel />} /> */}
+      </Route>
+      
+      {/* Ruta protegida para cualquier usuario autenticado */}
+      <Route element={<PrivateRoute />}>
+        {/* <Route path="/profile" element={<ProfilePage />} /> */}
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
