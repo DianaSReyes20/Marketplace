@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import { LoadingButton } from '@mui/lab';
 import { useLoginMutation } from '../../api/authApi';
 import { useNavigate } from 'react-router-dom';
+import { setCredentials } from '../../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 
 const validationSchema = Yup.object({
   email: Yup.string().email('Correo inválido').required('Campo obligatorio'),
@@ -15,6 +17,7 @@ const validationSchema = Yup.object({
 const LoginPage = () => {
   const [login, { isLoading }] = useLoginMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const gotoRegister = () => {
     navigate('/register');
@@ -43,8 +46,27 @@ const LoginPage = () => {
           validationSchema={validationSchema}
           onSubmit={async (values, { setSubmitting, setFieldError }) => {
             try {
-              await login(values).unwrap();
-              navigate('/dashboard');
+               const response = await login(values).unwrap();
+               //console.log('API response:', response);
+              
+              // Guarda los datos en Redux
+              dispatch(setCredentials({
+                user: {
+                  id: response.user.id,
+                  email: response.user.email,
+                  role: response.user.role,
+                },
+                token: response.token,
+              }));
+
+              // Redirecciona según el rol
+              console.log('User role:', response.user.role);
+              if (response.user.role === 'seller') {
+                console.log('Redirigiendo a dashboard');
+                navigate('/dashboard');
+              } else {
+                navigate('/');
+              }
             } catch (error) {
               console.error('Error login:', error);
               setFieldError('email', 'Credenciales inválidas');

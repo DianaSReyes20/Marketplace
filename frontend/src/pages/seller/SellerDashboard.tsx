@@ -1,8 +1,33 @@
-const SellerDashboardPage = () => {
+import { useState } from 'react';
+import { Box, Button, Typography } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import ProductFormModal from '../../features/products/ProductFormModal';
+import ProductList from '../../features/products/ProductList';
+
+const SellerDashboard = () => {
+  const [open, setOpen] = useState(false);
+  const [reload, setReload] = useState(false); // Para refrescar la lista
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false);
+    setReload(prev => !prev); // Refresca productos al cerrar
+  };
+
   return (
-    <div>Contenido de la página de dashboard del vendedor</div>
+    <Box p={4}>
+      <Typography variant="h4" gutterBottom>
+        Inventario de Productos
+      </Typography>
+      <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpen}>
+        Agregar Producto
+      </Button>
+
+      <ProductList reloadTrigger={reload} />
+
+      <ProductFormModal open={open} onClose={handleClose} />
+    </Box>
   );
 };
 
-// Asegúrate de exportar el componente
-export default SellerDashboardPage; // Exportación por defecto
+export default SellerDashboard;

@@ -5,7 +5,7 @@ import type { Product } from '../types/products';
 export const productsApi = createApi({
   reducerPath: 'productsApi',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: 'http://localhost:3000/api',
+    baseUrl: import.meta.env.REACT_APP_API_URL || 'http://localhost:3000/',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
@@ -15,8 +15,8 @@ export const productsApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    getSellerProducts: builder.query<Product[], void>({
-      query: () => 'products/seller',
+    getSellerProducts: builder.query<Product[], number>({
+      query: (sellerId) => `products/seller/${sellerId}`,
     }),
     searchProducts: builder.query<Product[], { name?: string; sku?: string; minPrice?: number; maxPrice?: number }>({
       query: (params) => ({
