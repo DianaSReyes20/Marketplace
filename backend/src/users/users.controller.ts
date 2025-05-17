@@ -21,9 +21,9 @@ export class UsersController {
     return await this.usersService.create(createUserDto);
   }
 
-  @Get()
-  async findAll(): Promise<User[]> {
-    return await this.usersService.getAll();
+  @Get('/')
+  async getAllSellers(): Promise<User[]> {
+    return await this.usersService.getAllSellers();
   }
 
   @Get(':id')

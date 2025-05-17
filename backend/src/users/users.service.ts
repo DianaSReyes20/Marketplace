@@ -16,8 +16,10 @@ export class UsersService {
     return user ?? undefined;
   }
 
-  async getAll(): Promise<User[]> {
-    return await this.usersRepository.find();
+  async getAllSellers(): Promise<User[]> {
+    return await this.usersRepository.find({
+      where: { role: 'seller' },
+    });
   }
 
   async create(userData: Partial<User>): Promise<User> {
