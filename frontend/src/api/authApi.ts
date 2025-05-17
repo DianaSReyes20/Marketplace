@@ -56,6 +56,9 @@ export const authApi = createApi({
         },
       }),
     }),
+    getAllSellers: builder.query<AuthResponse['user'][], void>({
+      query: () => 'users',
+    }),
   }),
 });
 
@@ -64,4 +67,5 @@ export const {
   useLoginMutation, 
   useRegisterMutation,
   useGetProfileQuery,
+  useGetAllSellersQuery,
 } = authApi;

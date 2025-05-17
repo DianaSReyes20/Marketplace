@@ -2,6 +2,8 @@ import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAddProductMutation } from '../../api/productsApi';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 interface ProductFormModalProps {
   open: boolean;
@@ -10,6 +12,8 @@ interface ProductFormModalProps {
 
 const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
   const [addProduct, { isLoading }] = useAddProductMutation();
+  const user = useSelector((state: RootState) => state.auth.user);
+  const sellerId = user ? user.id : undefined;
 
   const formik = useFormik({
     initialValues: {
@@ -19,22 +23,26 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
       stock: 0,
     },
     validationSchema: Yup.object({
-      name: Yup.string().required('Requerido'),
+      name: Yup.string().required('Campo obligatorio'),
       description: Yup.string(),
-      price: Yup.number().positive().required('Requerido'),
-      stock: Yup.number().integer().min(0).required('Requerido'),
+      price: Yup.number().positive().required('Campo obligatorio'),
+      stock: Yup.number().integer().min(0).required('Campo obligatorio'),
     }),
     onSubmit: async (values) => {
+      if (sellerId === undefined) {
+        console.error('No se encontró el ID del vendedor.');
+        return;
+      }
       try {
         await addProduct({
           ...values,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
-          userId: 0, // Set this appropriately, e.g., from auth context
-          sku: '',    // Generate or input SKU as needed
-          quantity: values.stock // Or set as needed
+          userId: sellerId,
+          sku: '',
+          quantity: values.stock
         }).unwrap();
-        onClose(); // Cierra y refresca lista
+        onClose(); 
       } catch (err) {
         console.error('Error al agregar producto:', err);
       }

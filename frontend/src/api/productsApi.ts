@@ -26,16 +26,20 @@ export const productsApi = createApi({
     }),
     addProduct: builder.mutation<Product, Omit<Product, 'id'>>({
       query: (body) => ({
-        url: 'products',
+        url: 'products/create',
         method: 'POST',
         body,
       }),
+    }),
+    getAllProducts: builder.query<Product[], void>({
+      query: () => 'products',
     }),
   }),
 });
 
 export const { 
   useGetSellerProductsQuery, 
+  useGetAllProductsQuery,
   useSearchProductsQuery,
   useAddProductMutation 
 } = productsApi;

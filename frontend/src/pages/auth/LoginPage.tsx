@@ -64,6 +64,9 @@ const LoginPage = () => {
               if (response.user.role === 'seller') {
                 console.log('Redirigiendo a dashboard');
                 navigate('/dashboard');
+              } else if (response.user.role === 'admin') {
+                console.log('Redirigiendo a panel de admin');
+                navigate('/admin');
               } else {
                 navigate('/');
               }
