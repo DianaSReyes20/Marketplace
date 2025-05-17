@@ -35,8 +35,23 @@ export class AuthService {
 
   async login(user: { email: string; id: number }) {
     const payload = { email: user.email, sub: user.id };
+    const access_token = await this.jwtService.signAsync(payload);
+
+    // Obtener el usuario completo desde la base de datos
+    const userFromDb = await this.usersService.findByEmail(user.email);
+
+    // Eliminar la contraseña antes de enviarlo al frontend
+    let userWithoutPassword;
+    if (userFromDb) {
+      const { password: _password, ...rest } = userFromDb;
+      userWithoutPassword = rest;
+    } else {
+      userWithoutPassword = undefined;
+    }
+
     return {
-      access_token: await this.jwtService.signAsync(payload),
+      access_token,
+      user: userWithoutPassword,
     };
   }
 }
