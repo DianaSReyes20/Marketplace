@@ -22,7 +22,10 @@ export class Product {
   description: string;
 
   @ManyToOne(() => User, (user) => user.products)
-  userId: User; // Relación con el usuario (vendedor)
+  user: User;
+
+  @Column({ nullable: true })
+  userId: number;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
