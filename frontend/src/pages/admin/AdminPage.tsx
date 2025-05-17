@@ -9,7 +9,7 @@ const AdminProductsPage = () => {
   const { data: products, isLoading } = useGetAllProductsQuery();
   const { data: sellers = [] } = useGetAllSellersQuery(); // Lista de vendedores
   const [sellerFilter, setSellerFilter] = useState('');
-  const user = { name: 'John Doe' };
+  const user = { name: 'Sofia Reyes' };
 
   const filteredProducts = sellerFilter
     ? products?.filter(p => p.userId === parseInt(sellerFilter))
@@ -19,7 +19,7 @@ const AdminProductsPage = () => {
     <>
       <TopBar username={user.name} />
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <h2>Productos</h2>
+        <h2>Productos de la tienda</h2>
 
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel>Filtrar por vendedor</InputLabel>
@@ -46,9 +46,9 @@ const AdminProductsPage = () => {
                 <Card sx={{ height: '100%' }}>
                   <CardMedia
                     component="img"
-                    height="140"
+                    height="240"
                     //image={product.image || '/placeholder.jpg'}
-                    image='/samsung-a55.jpg'
+                    image='samsung-a55.jpg'
                     alt={product.name}
                   />
                   <CardContent>

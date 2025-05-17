@@ -45,7 +45,7 @@ const RegisterModal = ({ open, onClose }: RegisterModalProps) => {
       <Box
         sx={{
           position: 'absolute' as const,
-          top: '20%',
+          top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: 400,

@@ -5,7 +5,8 @@ import LoginPage from './pages/auth/LoginPage';
 import RegisterModal from './components/auth/RegisterModal';
 import SellerDashboard from './pages/seller/SellerDashboard';
 import AdminPage from './pages/admin/AdminPage';
-// import AdminPanel from './pages/admin/AdminPanel';
+import HomePage from './pages/HomePage';
+import Marketplace from './pages/Marketplace';
 
 function App() {
   const location = useLocation();
@@ -33,19 +34,15 @@ function App() {
         <Route path="/dashboard" element={<SellerDashboard />} />
       </Route>
 
-      {/* Rutas protegidas para admin */}
+      {/* Rutas protegidas para administrador */}
       <Route element={<PrivateRoute allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminPage />} />
       </Route>
       
-      {/* Rutas protegidas para administradores */}
-      <Route element={<PrivateRoute allowedRoles={['admin']} />}>
-        {/* <Route path="/admin" element={<AdminPanel />} /> */}
-      </Route>
-      
-      {/* Ruta protegida para cualquier usuario autenticado */}
+      {/* Ruta protegida para cualquier usuario */}
       <Route element={<PrivateRoute />}>
-        {/* <Route path="/profile" element={<ProfilePage />} /> */}
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/marketplace" element={<Marketplace />} />
       </Route>
     </Routes>
     </>

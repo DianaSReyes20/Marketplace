@@ -19,12 +19,14 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
     initialValues: {
       name: '',
       description: '',
+      sku: '',
       price: 0,
       stock: 0,
     },
     validationSchema: Yup.object({
       name: Yup.string().required('Campo obligatorio'),
       description: Yup.string(),
+      sku: Yup.string().required('Campo obligatorio'),
       price: Yup.number().positive().required('Campo obligatorio'),
       stock: Yup.number().integer().min(0).required('Campo obligatorio'),
     }),
@@ -39,7 +41,6 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
           userId: sellerId,
-          sku: '',
           quantity: values.stock
         }).unwrap();
         onClose(); 
@@ -54,7 +55,7 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
       <Box
         sx={{
           position: 'absolute',
-          top: '20%',
+          top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
           width: 400,
@@ -85,6 +86,16 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
             name="description"
             value={formik.values.description}
             onChange={formik.handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="SKU"
+            name="sku"
+            value={formik.values.sku}
+            onChange={formik.handleChange}
+            error={formik.touched.price && Boolean(formik.errors.price)}
+            helperText={formik.touched.price && formik.errors.price}
           />
           <TextField
             fullWidth

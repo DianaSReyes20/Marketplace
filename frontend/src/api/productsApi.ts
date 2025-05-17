@@ -38,8 +38,8 @@ export const productsApi = createApi({
 });
 
 export const { 
-  useGetSellerProductsQuery, 
+  useGetSellerProductsQuery,
   useGetAllProductsQuery,
   useSearchProductsQuery,
-  useAddProductMutation 
+  useAddProductMutation,
 } = productsApi;
