@@ -21,6 +21,11 @@ export class ProductsController {
     return await this.productsService.create(createProductDto);
   }
 
+  @Get('/')
+  async getAll(): Promise<Product[]> {
+    return await this.productsService.getAll();
+  }
+
   @Get('seller/:sellerId')
   async getProductsBySeller(
     @Param('sellerId') sellerId: string,
