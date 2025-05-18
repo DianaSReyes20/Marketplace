@@ -10,7 +10,9 @@ Aplicación web responsive con 3 tipos de usuarios: seller, buyer, admin. Cada u
 - Marketplace público
 - Gestión de productos
 
-NOTA: Tener en cuenta que la app está desarrollada para que se ingrese el precio de los productos en USD.
+NOTAS IMPORTANTES: 
+1. Para visualizar el Marketplace público NO es necesario registrarse.
+2. Tener en cuenta que la app está desarrollada para que se ingrese el precio de los productos en USD.
 
 ## Lenguajes y Tecnologías usadas
 Nest JS, TypeScript, React + Redux Toolkit, Material UI (MUI) y MySQL.
@@ -73,6 +75,17 @@ Frontend (React + Redux + Toolkit)
 - MySQL 8+
 - npm/yarn
 
+## Aplicación publicada en Hosting público
+- Hosting Railway para BD MySQL y backend
+
+Ejemplo de petición backend desde el hosting Railway:
+GET || https://marketplace-production-ea6f.up.railway.app/products
+
+- Hosting Netlify para frontend
+URL publicada: https://jolly-manatee-58283c.netlify.app/
+
+Usuario admin por defecto: admin@marketplace.com || 123456
+
 ## Instalación rápida
 
 ```bash
@@ -85,3 +98,6 @@ npm install
 # Ejecutar localmente
 Backend: npm start
 Frontennd: npm run prod
+
+# Creación BD MySQL localmente
+Revisar repositorio /docs/marketplace_schema.sql
