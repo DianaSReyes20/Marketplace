@@ -17,11 +17,17 @@ import { ProductsModule } from './products/products.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
+        host: configService.get('DB_HOST') || configService.get('MYSQLHOST'),
+        port:
+          configService.get<number>('DB_PORT') ||
+          configService.get<number>('MYSQLPORT'),
+        username:
+          configService.get('DB_USERNAME') || configService.get('MYSQLUSER'),
+        password:
+          configService.get('DB_PASSWORD') ||
+          configService.get('MYSQLPASSWORD'),
+        database:
+          configService.get('DB_NAME') || configService.get('MYSQLDATABASE'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: configService.get('DB_SYNCHRONIZE') === 'true',
       }),
