@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 
@@ -12,25 +12,21 @@ import { ProductsModule } from './products/products.module';
     }),
     AuthModule,
     ProductsModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST') || configService.get('MYSQLHOST'),
-        port:
-          configService.get<number>('DB_PORT') ||
-          configService.get<number>('MYSQLPORT'),
-        username:
-          configService.get('DB_USERNAME') || configService.get('MYSQLUSER'),
-        password:
-          configService.get('DB_PASSWORD') ||
-          configService.get('MYSQLPASSWORD'),
-        database:
-          configService.get('DB_NAME') || configService.get('MYSQLDATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: configService.get('DB_SYNCHRONIZE') === 'true',
-      }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      url: process.env.MYSQL_URL,
+      host: process.env.MYSQLHOST,
+      port: parseInt(process.env.MYSQLPORT || '3306'),
+      username: process.env.MYSQLUSER,
+      password: process.env.MYSQLPASSWORD,
+      database: process.env.MYSQLDATABASE,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: false,
+      ssl: { rejectUnauthorized: false },
+      extra: {
+        connectionLimit: 5,
+        connectTimeout: 10000, // 10 segundos de timeout
+      },
     }),
   ],
 })
