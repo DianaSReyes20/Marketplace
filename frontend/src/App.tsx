@@ -30,6 +30,7 @@ function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/marketplace" element={<Marketplace />} />
+      <Route path="/" element={<HomePage />} />
 
       {/* Rutas protegidas para vendedores */}
       <Route element={<PrivateRoute allowedRoles={['seller']} />}>
