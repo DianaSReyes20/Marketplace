@@ -10,6 +10,8 @@ Aplicación web responsive con 3 tipos de usuarios: seller, buyer, admin. Cada u
 - Marketplace público
 - Gestión de productos
 
+NOTA: Tener en cuenta que la app está desarrollada para que se ingrese el precio de los productos en USD.
+
 ## Lenguajes y Tecnologías usadas
 Nest JS, TypeScript, React + Redux Toolkit, Material UI (MUI) y MySQL.
 
@@ -63,7 +65,7 @@ Frontend (React + Redux + Toolkit)
 - buyer/otros: (Rutas públicas)
 	/login : Inicio de sesión de usuarios
 	/home : Información de marketplace 
-	/Marketplace : Productos del sistema con filtros de nombre, sku y/o precios
+	/Marketplace : Productos del sistema con filtros de nombre, sku y/o precios (NOTA: Tener en cuenta que la app está desarrollada para que se ingrese el precio de los productos en USD).
 
 ## Requisitos previos
 
