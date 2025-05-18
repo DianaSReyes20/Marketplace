@@ -1,33 +1,30 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
+    }),
     AuthModule,
     ProductsModule,
-    // Configuración de TypeORM para desarrollo
-    // TypeOrmModule.forRoot({
-    //   type: 'mysql',
-    //   host: 'localhost',
-    //   port: 3306,
-    //   username: 'root',
-    //   password: '1234',
-    //   database: 'marketplace',
-    //   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    //   synchronize: true, // Solo en desarrollo
-    // }),
-    // Configuración de TypeORM para Railway
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'nozomi.proxy.rlwy.net', // host de Railway
-      port: 45876, // puerto de Railway
-      username: 'root', // username de Railway
-      password: 'tu_password_aqui', // pon aquí la contraseña que Railway oculta
-      database: 'railway', // nombre de la base
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // cuidado: solo para desarrollo
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get('DB_USERNAME'),
+        password: configService.get('DB_PASSWORD'),
+        database: configService.get('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: configService.get('DB_SYNCHRONIZE') === 'true',
+      }),
     }),
   ],
 })
