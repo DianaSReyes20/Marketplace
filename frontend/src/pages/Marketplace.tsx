@@ -1,6 +1,8 @@
 import { useGetAllProductsQuery } from '../api/productsApi';
 import TopBar from '../components/shared/TopBar';
 import { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 import Grid from '@mui/material/Grid';
 import {
   Card,
@@ -14,17 +16,22 @@ import {
 } from '@mui/material';
 
 const Marketplace = () => {
+  // Hook de RTK Query para obtener todos los productos
   const { data: products, isLoading } = useGetAllProductsQuery();
-  const user = { name: 'Sofia Reyes' };
+
+  const user = useSelector((state: RootState) => state.auth.user); // Acceder al usuario autenticado
+  const username = user ? user.email : 'Iniciar sesión';  // Nombre del usuario autenticado
 
   // Filtros de búsqueda
   const [search, setSearch] = useState('');
   const [priceRange, setPriceRange] = useState<number[]>([0, 1000]);
 
+  // Función para manejar el cambio del filtro de precios
   const handlePriceChange = (_: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
   };
   
+  // Función para limpiar los filtros
   const clearFilters = () => {
     setSearch('');
     setPriceRange([0, 1000]);
@@ -41,8 +48,6 @@ const Marketplace = () => {
       const price = typeof product.price === 'string' ? parseFloat(product.price) : product.price;
       const min = priceRange[0];
       const max = priceRange[1];
-
-
       const matchesPrice = price >= min && price <= max;
 
       return matchesSearch && matchesPrice;
@@ -51,7 +56,7 @@ const Marketplace = () => {
 
   return (
     <>
-      <TopBar username={user.name} />
+      <TopBar username={username} />
       <Box px={4}>
         <h2>Productos de la tienda</h2>
 

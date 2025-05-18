@@ -5,16 +5,19 @@ import { useAddProductMutation } from '../../api/productsApi';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 
+// Props para determinar si el modal está abierto y cómo cerrarlo
 interface ProductFormModalProps {
   open: boolean;
   onClose: () => void;
 }
 
 const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
+  // Hook de RTK Query para registrar productos
   const [addProduct, { isLoading }] = useAddProductMutation();
   const user = useSelector((state: RootState) => state.auth.user);
   const sellerId = user ? user.id : undefined;
 
+  // Configuración de Formik para el formulario de registro
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -23,6 +26,7 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
       price: 0,
       stock: 0,
     },
+    // Validación del formulario usando Yup
     validationSchema: Yup.object({
       name: Yup.string().required('Campo obligatorio'),
       description: Yup.string(),
@@ -30,6 +34,7 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
       price: Yup.number().positive().required('Campo obligatorio'),
       stock: Yup.number().integer().min(0).required('Campo obligatorio'),
     }),
+    // Acción al enviar formulario
     onSubmit: async (values) => {
       if (sellerId === undefined) {
         console.error('No se encontró el ID del vendedor.');
@@ -94,8 +99,8 @@ const ProductFormModal = ({ open, onClose }: ProductFormModalProps) => {
             name="sku"
             value={formik.values.sku}
             onChange={formik.handleChange}
-            error={formik.touched.price && Boolean(formik.errors.price)}
-            helperText={formik.touched.price && formik.errors.price}
+            error={formik.touched.sku && Boolean(formik.errors.sku)}
+            helperText={formik.touched.sku && formik.errors.sku}
           />
           <TextField
             fullWidth

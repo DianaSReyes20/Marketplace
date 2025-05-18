@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-// Define los tipos para las solicitudes/respuestas
+// Define los diferentes tipos para las solicitudes/respuestas
 interface LoginRequest {
   email: string;
   password: string;
@@ -21,7 +21,7 @@ interface AuthResponse {
   token: string;
 }
 
-// Crea la API de autenticación
+// Creción de API de autenticación del usuario
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({ 

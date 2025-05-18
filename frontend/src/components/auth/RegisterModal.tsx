@@ -4,21 +4,29 @@ import { useRegisterMutation } from '../../api/authApi';
 import { Modal, TextField, Alert, Box, Avatar, Typography, Link } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { LoadingButton } from '@mui/lab';
+import { useState } from 'react'; // 👈 Asegúrate de tener este import
 
+// Props para determinar si el modal está abierto y cómo cerrarlo
 interface RegisterModalProps {
   open: boolean;
   onClose: () => void;
 }
 
 const RegisterModal = ({ open, onClose }: RegisterModalProps) => {
+  // Hook de RTK Query para registrar usuarios
   const [register, { isLoading, error }] = useRegisterMutation();
+  // Estado para manejar mensajes de éxito o error
+  const [successMessage, setSuccessMessage] = useState('');
+
   
+  // Configuración de Formik para el formulario de registro
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
       confirmPassword: '',
     },
+    // Validación del formulario usando Yup
     validationSchema: Yup.object({
       email: Yup.string().email('Email inválido').required('Campo obligatorio'),
       password: Yup.string().min(6, 'Mínimo 6 caracteres').required('Campo obligatorio'),
@@ -26,6 +34,7 @@ const RegisterModal = ({ open, onClose }: RegisterModalProps) => {
         .oneOf([Yup.ref('password'), undefined], 'Las contraseñas no coinciden')
         .required('Campo obligatorio'),
     }),
+    // Acción al enviar formulario
     onSubmit: async (values) => {
       try {
         await register({
@@ -33,7 +42,13 @@ const RegisterModal = ({ open, onClose }: RegisterModalProps) => {
           password: values.password,
           role: 'seller'
         }).unwrap();
-        onClose();
+        setSuccessMessage('¡Usuario registrado exitosamente!');
+        
+        // Cerrar el modal después de 2 segundos
+         setTimeout(() => {
+          setSuccessMessage('');
+          onClose();
+        }, 2000); 
       } catch (err) {
         console.error('Error al registrar:', err);
       }
@@ -79,21 +94,32 @@ const RegisterModal = ({ open, onClose }: RegisterModalProps) => {
             type="password"
             margin="normal"
             fullWidth
+            value={formik.values.password}
             onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
           />
+
           <TextField
             name="confirmPassword"
             label="Confirmar contraseña"
             type="password"
             margin="normal"
             fullWidth
+            value={formik.values.confirmPassword}
             onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            onBlur={formik.handleBlur}
+            error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+            helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
           />
           
+          {successMessage && (
+            <Alert severity="success" sx={{ mb: 2 }}>
+              {successMessage}
+            </Alert>
+          )}
+
           {error && (
             <Alert severity="error">
               {typeof error === 'string'

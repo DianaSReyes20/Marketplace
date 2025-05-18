@@ -28,6 +28,8 @@ function App() {
       <Routes>
       {/* Rutas públicas */}
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/home" element={<HomePage />} />
+      <Route path="/marketplace" element={<Marketplace />} />
 
       {/* Rutas protegidas para vendedores */}
       <Route element={<PrivateRoute allowedRoles={['seller']} />}>
@@ -37,12 +39,6 @@ function App() {
       {/* Rutas protegidas para administrador */}
       <Route element={<PrivateRoute allowedRoles={['admin']} />}>
         <Route path="/admin" element={<AdminPage />} />
-      </Route>
-      
-      {/* Ruta protegida para cualquier usuario */}
-      <Route element={<PrivateRoute />}>
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/marketplace" element={<Marketplace />} />
       </Route>
     </Routes>
     </>

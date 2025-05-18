@@ -1,13 +1,17 @@
 import { Box, Typography, Stack, Button, Divider } from '@mui/material';
 import TopBar from '../components/shared/TopBar';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store/store';
 
+// Definición de las categorías a mostrar
 const categories = [
   { title: 'Portátiles', icon: '/products/laptops.png' },
   { title: 'Smartphones', icon: '/products/smartphones.jpg' },
   { title: 'Tablets', icon: '/products/tablets.png' },
 ];
 
+// Componente para mostrar cada categoría
 export const CategoryItem = ({ icon, title }: { icon: string; title: string }) => (
   <Box textAlign="center">
     <img src={icon} alt={title} style={{ width: 80, height: 80 }} />
@@ -17,10 +21,12 @@ export const CategoryItem = ({ icon, title }: { icon: string; title: string }) =
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const user = useSelector((state: RootState) => state.auth.user); // Acceder al usuario autenticado
+  const username = user ? user.email : 'Iniciar sesión';  // Nombre del usuario autenticado
   return (
     <>
-        <TopBar username={''} />
-        <Box py={4} textAlign={'center'}>
+        <TopBar username={username} />
+        <Box py={4} px={4} textAlign={'center'}>
             <Typography variant="h4" fontWeight="bold" mb={1}>
                 Bienvenido a Marketplace Magic ♦
             </Typography>

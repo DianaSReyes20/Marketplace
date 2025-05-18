@@ -4,20 +4,27 @@ import TopBar from '../../components/shared/TopBar';
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import { Container, Card, CardContent, CardMedia, Typography, FormControl, MenuItem, InputLabel, Select } from '@mui/material';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../store/store';
 
 const AdminProductsPage = () => {
+  // Hooks de RTK Query para obtener todos los productos y productos por seller
   const { data: products, isLoading } = useGetAllProductsQuery();
   const { data: sellers = [] } = useGetAllSellersQuery(); // Lista de vendedores
   const [sellerFilter, setSellerFilter] = useState('');
-  const user = { name: 'Sofia Reyes' };
 
+  // Selector para obtener el email del admin autenticado
+  const user = useSelector((state: RootState) => state.auth.user); // Acceder al usuario autenticado
+  const username = user ? user.email : '';  // Nombre del usuario autenticado
+
+  // Filtrar productos por vendedor
   const filteredProducts = sellerFilter
     ? products?.filter(p => p.userId === parseInt(sellerFilter))
     : products;
 
   return (
     <>
-      <TopBar username={user.name} />
+      <TopBar username={username} />
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <h2>Productos de la tienda</h2>
 
