@@ -10,6 +10,61 @@ Aplicación web responsive con 3 tipos de usuarios: seller, buyer, admin. Cada u
 - Marketplace público
 - Gestión de productos
 
+## Lenguajes y Tecnologías usadas
+Nest JS, TypeScript, React + Redux Toolkit, Material UI (MUI) y MySQL.
+
+## Estructura del proyecto
+Backend (NestJS)
+
+- auth: Módulo para autenticación y autorización
+	login.dto.ts y register.dto.ts: DTOs para validar datos de entrada
+	jwt-auth.guard.ts: Guardia para proteger rutas con JWT
+	Controlador, servicio y módulo para manejar autenticación
+
+- products: Módulo para productos 
+	DTOs para creación y actualización
+	Entidad Product
+	Controlador, servicio y módulo para operaciones CRUD
+
+- users: Módulo para usuarios
+	DTOs para creación y actualización
+	Entidad User
+	Controlador, servicio y módulo para operaciones CRUD
+
+- Archivos principales:
+	main.ts: Punto de entrada de la aplicación
+	app.module.ts: Módulo raíz que importa otros módulos
+	app.controller.ts: Controlador raíz
+
+Frontend (React + Redux + Toolkit)
+- api: Clientes API para comunicarse con el backend
+	authApi.ts y productsApi.ts: Llamadas API
+
+- components: Componentes reutilizables
+	auth: Componentes relacionados con autenticación (RegisterModal)
+	shared: Componentes compartidos (PrivateRoute para rutas protegidas, TopBar para navegación)
+
+- features: Lógica de Redux organizada por features
+	auth: Slice de Redux para manejar estado de autenticación
+	products: Componentes y lógica para productos
+	pages: Componentes de página completos
+	admin: Página de administración
+	auth: Página de login
+	seller: Dashboard para vendedores
+	HomePage.tsx y Marketplace.tsx: Páginas principales
+
+- store: Configuración de Redux store
+
+- types: Tipos TypeScript compartidos
+
+## Configuración de rutas según autenticación de usuarios
+- admin: /admin : Panel productos registrados con filtro por vendedor
+- seller: /dashboard : Inventario de productos
+- buyer/otros: (Rutas públicas)
+	/login : Inicio de sesión de usuarios
+	/home : Información de marketplace 
+	/Marketplace : Productos del sistema con filtros de nombre, sku y/o precios
+
 ## Requisitos previos
 
 - Node.js v16+
