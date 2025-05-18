@@ -25,7 +25,7 @@ interface AuthResponse {
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({ 
-    baseUrl: import.meta.env.REACT_APP_API_URL || 'http://localhost:3000/',
+    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000/',
   }),
   endpoints: (builder) => ({
     // Endpoint para login

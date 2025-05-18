@@ -7,7 +7,7 @@ export const productsApi = createApi({
   reducerPath: 'productsApi',
   baseQuery: fetchBaseQuery({ 
     // Usar environment variable para la URL base o por defecto localhost 3000
-    baseUrl: import.meta.env.REACT_APP_API_URL || 'http://localhost:3000/',
+    baseUrl: import.meta.env.VITE_API_URL || 'http://localhost:3000/',
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
