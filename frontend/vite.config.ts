@@ -1,22 +1,10 @@
-/// <reference types="vite/client" />
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
-export default defineConfig(({ mode }) => ({
+// Configuración segura que no falla si falta la variable
+export default defineConfig({
   plugins: [react()],
   define: {
-    'process.env': process.env,
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target:
-          mode === 'development'
-            ? 'http://localhost:3000'
-            : import.meta.env.VITE_API_URL,
-        changeOrigin: true,
-        secure: mode !== 'development',
-      },
-    },
-  },
-}));
+    'process.env.VITE_API_URL': JSON.stringify(process.env.VITE_API_URL || 'http://localhost:3000/api')
+  }
+})
